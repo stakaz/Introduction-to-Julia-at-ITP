@@ -79,6 +79,13 @@ end
 ########################################
 t = ccall((:clock, "libc"), Int32, ())
 
+## calculate Γ(0.2, 0.3) / Γ(0.2)
+Libdl.dlopen(:libgslcblas, Libdl.RTLD_GLOBAL) ## load shared library and allow to it use by others
+result_gsl = ccall((:gsl_sf_gamma_inc_Q, :libgsl), Cdouble, (Cdouble, Cdouble), 0.2, 0.3) ## call to gsl
+
+result_wolfram = 0.1834732056663472574158874020#...
+result_wolfram ≈ result_gsl # isapprox
+
 
 using PyCall
 @pyimport math
